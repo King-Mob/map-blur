@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <link href="styles.css" rel="stylesheet">
+    <title>Map Blur</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+</head>
+
+<body>
+    <script src="scripts.js"></script>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoia2luZ21vYiIsImEiOiJjbGVoZmZ2aXYwaW56M3BtY3dwNWdta2JmIn0.JLexBunfJM0gzJkvA4USHQ';
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: 'mapbox://styles/mapbox/streets-v12', // style URL
+            center: [-0.1, 51.5], // starting position [lng, lat]
+            zoom: 13 // starting zoom
+        });
+
+        const newBlur = document.createElement("div");
+        newBlur.style.height = "300px";
+        newBlur.style.width = "300px";
+        newBlur.style.opacity = "0";
+        newBlur.style.backdropFilter = "blur(4px)";
+
+        const marker = new mapboxgl.Marker(newBlur)
+            .setLngLat([-0.1, 51.5])
+            .addTo(map);
+
+        newBlur.addEventListener('click', () => {
+            if (newBlur.style.backdropFilter == "blur(0px)") {
+                newBlur.style.backdropFilter = "blur(4px)";
+            }
+            else {
+                newBlur.style.backdropFilter = "blur(0px)";
+            }
+        });
+
+        map.on("zoom", () => {
+            console.log("zooming")
+            console.log(map)
+            const mapElement = document.getElementById("map");
+            if (map.getZoom() > 25) {
+                mapElement.style.filter = 'blur(10px)';
+            }
+            else {
+                mapElement.style.filter = 'blur(0px)';
+            }
+        })
+    </script>
+</body>
+
+</html>
